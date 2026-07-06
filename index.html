@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- DÜZENLE: Adını kontrol et — sitede her yerde "Ilgar Özali" kullanıldı -->
+  <title>Ilgar Özali — Matematik Animasyonları</title>
+  <meta name="description" content="Matematiğin en güzel fikirlerini Manim ile 60–90 saniyelik sesli animasyonlara dönüştürüyorum. Ezber yok, görerek anlama var.">
+  <meta name="theme-color" content="#0B1220">
+  <meta property="og:title" content="Ilgar Özali — Matematik Animasyonları">
+  <meta property="og:description" content="Formül ezberlemeyin. İzleyin. Manim ile saniye saniye kurgulanmış matematik animasyonları.">
+  <meta property="og:type" content="website">
+  <!-- DÜZENLE: yayına alınca aşağıdaki iki satırdaki adresi kendi site adresinle değiştir -->
+  <meta property="og:image" content="videos/trigonometrik-ozdeslik.jpg">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<canvas id="parcaciklar" aria-hidden="true"></canvas>
+
+<nav class="ust-bar">
+  <a class="marka" href="#basi">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="#F5F7FA" stroke-width="1.5" opacity=".85"/>
+      <line x1="12" y1="12" x2="17.6" y2="12" stroke="#F59E0B" stroke-width="2"/>
+      <line x1="17.6" y1="12" x2="17.6" y2="5.9" stroke="#22D3EE" stroke-width="2" stroke-dasharray="2 2.4"/>
+      <circle cx="17.6" cy="5.9" r="2" fill="#FDE68A"/>
+    </svg>
+    <!-- DÜZENLE: adın -->
+    <span>Ilgar Özali</span>
+  </a>
+  <div class="ust-bar-sag">
+    <div class="baglantilar">
+      <a href="#animasyonlar">Animasyonlar</a>
+      <a href="#surec">Süreç</a>
+      <a href="#hakkimda">Hakkımda</a>
+      <a href="#iletisim">İletişim</a>
+    </div>
+    <div class="theta-metre" title="Sayfa ilerlemesi" aria-hidden="true">
+      <svg viewBox="0 0 20 20" width="15" height="15">
+        <circle cx="10" cy="10" r="7.5" fill="none" stroke="#8B98AC" stroke-width="1.4" opacity=".55"/>
+        <circle id="theta-nokta" cx="17.5" cy="10" r="2.4" fill="#22D3EE"/>
+      </svg>
+      <span id="theta-deger">θ = 0.00π</span>
+    </div>
+  </div>
+</nav>
+
+<header class="kahraman" id="basi">
+  <div class="kahraman-ic">
+    <div class="kahraman-metin">
+      <p class="gozkasi reveal">MATEMATİK ANİMASYONLARI · MANIM İLE</p>
+      <h1 class="reveal" style="--d:.08s">Formül ezberlemeyin.<br><em>İzleyin.</em></h1>
+      <p class="alt-baslik reveal" style="--d:.16s">
+        Merhaba, ben Ilgar. Matematiğin en güzel fikirlerini saniye saniye kurgulanmış,
+        sesli, 60–90 saniyelik animasyonlarla ispatlıyorum — her kare kodla çiziliyor.
+      </p>
+      <div class="cta-satiri reveal" style="--d:.24s">
+        <button class="btn btn-birincil" data-video-ac="trigonometrik-ozdeslik">
+          <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>
+          Son animasyonu izle
+        </button>
+        <a class="btn btn-ikincil" href="#surec">Nasıl yapıyorum?</a>
+      </div>
+    </div>
+    <figure class="kahraman-gorsel" aria-label="Canlı birim çember animasyonu: dönen P noktasının sinüs ve kosinüs izdüşümleri">
+      <svg id="birim-cember" viewBox="0 0 560 560">
+        <g id="uc-eksenler">
+          <line x1="34" y1="280" x2="526" y2="280"/>
+          <line x1="280" y1="34" x2="280" y2="526"/>
+        </g>
+        <circle id="uc-cember" cx="280" cy="280" r="200"/>
+        <g id="uc-dinamik">
+          <path id="uc-arc" d=""/>
+          <line id="uc-cos" x1="280" y1="280" x2="280" y2="280"/>
+          <line id="uc-sin" x1="280" y1="280" x2="280" y2="280"/>
+          <line id="uc-yaricap" x1="280" y1="280" x2="280" y2="280"/>
+          <circle id="uc-glow" cx="280" cy="280" r="11"/>
+          <circle id="uc-nokta" cx="280" cy="280" r="6.5"/>
+          <text id="uc-p-l" class="uc-etiket uc-ink">P</text>
+          <text id="uc-r-l" class="uc-etiket uc-ink"><tspan font-style="italic">r</tspan> = 1</text>
+          <text id="uc-sin-l" class="uc-etiket uc-cyan">sin <tspan font-style="italic">θ</tspan></text>
+          <text id="uc-cos-l" class="uc-etiket uc-amber">cos <tspan font-style="italic">θ</tspan></text>
+          <text id="uc-theta-l" class="uc-etiket uc-gold" font-style="italic">θ</text>
+        </g>
+      </svg>
+    </figure>
+  </div>
+  <a class="kaydir-ipucu" href="#animasyonlar" aria-label="Aşağı kaydır">
+    <span>kaydır</span>
+    <svg viewBox="0 0 14 8" width="14" height="8" aria-hidden="true"><path d="M1 1l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </a>
+</header>
+
+<main>
+
+  <section id="animasyonlar" class="bolum">
+    <header class="bolum-baslik reveal">
+      <p class="gozkasi"><span class="tik"></span>SAHNE 01 · ANİMASYONLAR</p>
+      <h2>Her video, tek bir fikrin ispatı</h2>
+      <div class="cizgi"></div>
+    </header>
+    <div id="galeri"><!-- js/videos.js içeriğinden oluşturulur --></div>
+  </section>
+
+  <section id="surec" class="bolum">
+    <header class="bolum-baslik reveal">
+      <p class="gozkasi"><span class="tik"></span>SAHNE 02 · SÜREÇ</p>
+      <h2>Her saniyenin bir planı var</h2>
+      <div class="cizgi"></div>
+      <p class="bolum-ozet">Bir animasyon üç katmandan geçerek ekrana geliyor — üçü de bu klasördeki gerçek dosyalardan.</p>
+    </header>
+    <div class="surec-izgara">
+      <article class="kart reveal">
+        <p class="adim-etiket">ADIM 01 · STORYBOARD</p>
+        <h3>Önce kâğıt üzerinde</h3>
+        <p>Video, daha tek karesi çizilmeden saniye saniye yazılır: hangi anda ne belirecek,
+           hangi ses girecek, ekranın neresi boş kalacak.</p>
+        <div class="sb-tablo" aria-label="Storyboard örneği">
+          <div class="sb-satir"><span class="sb-zaman">0.0–1.2</span><span class="sb-eylem">sin²θ + cos²θ = ? yazılır</span><span class="sb-ses">♪ boom</span></div>
+          <div class="sb-satir"><span class="sb-zaman">1.2–2.0</span><span class="sb-eylem">formülde altın ışıltı nabzı</span><span class="sb-ses">♪ sihir</span></div>
+          <div class="sb-satir"><span class="sb-zaman">3.8–6.3</span><span class="sb-eylem">sin ve cos eğrileri eş zamanlı çizilir</span><span class="sb-ses">♪ draw</span></div>
+          <div class="sb-satir"><span class="sb-zaman">14.0–15.2</span><span class="sb-eylem">“Kanıt için birim çembere bakalım”</span><span class="sb-ses">♪ pop</span></div>
+        </div>
+      </article>
+      <article class="kart reveal" style="--d:.1s">
+        <p class="adim-etiket">ADIM 02 · MANIM + PYTHON</p>
+        <h3>Her kare kodla çizilir</h3>
+        <p>El çizimi yok: her nokta, her eğri Python ile programlanır.
+           Koordinatlar matematiğin kendisinden gelir.</p>
+        <pre class="kod" aria-label="Manim kod örneği"><code><span class="c-kw">class</span> <span class="c-fn">TrigonometrikOzdeslik</span>(Scene):
+    <span class="c-kw">def</span> <span class="c-fn">birim_cember</span>(<span class="c-kw">self</span>):
+        <span class="c-kw">self</span>.theta = ValueTracker(<span class="c-sayi">0.9</span>)  <span class="c-yorum"># ~52°</span>
+        <span class="c-kw">self</span>.cember = Circle(radius=R, color=INK)
+        <span class="c-kw">self</span>.add_sound(<span class="c-str">"sesler/draw.wav"</span>, gain=<span class="c-sayi">-5</span>)
+
+        <span class="c-kw">self</span>.nokta = always_redraw(<span class="c-kw">lambda</span>:
+            Dot(<span class="c-kw">self</span>.P_konum(), color=INK))
+        <span class="c-kw">self</span>.aci = always_redraw(<span class="c-kw">lambda</span>:
+            MathTex(<span class="c-str">r"\theta"</span>, color=GOLD))</code></pre>
+      </article>
+      <article class="kart reveal" style="--d:.2s">
+        <p class="adim-etiket">ADIM 03 · SES TASARIMI</p>
+        <h3>Efektler de kod</h3>
+        <p>Sesler hazır kütüphaneden gelmiyor; her biri NumPy ile sentezlenip
+           sahneye milisaniyesinde yerleştiriliyor. Dinleyin:</p>
+        <div class="ses-cipler">
+          <button class="ses-cip" data-ses="sounds/boom.wav">boom</button>
+          <button class="ses-cip" data-ses="sounds/whoosh.wav">whoosh</button>
+          <button class="ses-cip" data-ses="sounds/pop_soft.wav">pop</button>
+          <button class="ses-cip" data-ses="sounds/tick.wav">tick</button>
+          <button class="ses-cip" data-ses="sounds/sihir.wav">sihir</button>
+          <button class="ses-cip" data-ses="sounds/zafer.wav">zafer</button>
+        </div>
+        <p class="kart-dipnot">Hepsi <code>ses_uret.py</code> içinde, saf sinüs dalgaları ve gürültüden üretildi.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="hakkimda" class="bolum">
+    <header class="bolum-baslik reveal">
+      <p class="gozkasi"><span class="tik"></span>SAHNE 03 · HAKKIMDA</p>
+      <h2>Merhaba, ben Ilgar</h2>
+      <div class="cizgi"></div>
+    </header>
+    <div class="hakkimda-izgara">
+      <div class="hakkimda-metin reveal">
+        <!-- DÜZENLE: Aşağıdaki tanıtım taslağını kendine göre düzenle -->
+        <p>Matematiğin bana en çok keyif veren yanı, doğru açıdan bakınca her parçanın
+           yerine oturması. Animasyon, o doğru açıyı herkese gösterebilmenin en kısa yolu —
+           bu yüzden formülleri ezberletmek yerine onları hareketli, sesli, kısa
+           hikâyelere dönüştürüyorum.</p>
+        <p>Videolarımın her karesi kodla çiziliyor: sahneleri Python ve Manim ile
+           programlıyor, ses efektlerini NumPy ile sentezliyor, her vuruşu storyboard
+           üzerinde saniyesine kadar planlıyorum. Amacım hep aynı: <em>“neden böyle?”</em>
+           sorusunun cevabını gözle görülür hale getirmek.</p>
+        <!-- DÜZENLE: Buraya kendinle ilgili bir paragraf ekleyebilirsin
+             (ne okuyorsun / ne iş yapıyorsun, animasyona nasıl başladın, hedefin ne...) -->
+      </div>
+      <aside class="arac-kutusu kart reveal" style="--d:.12s">
+        <p class="adim-etiket">ARAÇ KUTUSU</p>
+        <ul>
+          <li><strong>Python + Manim</strong><span>her kare kodla çizilir</span></li>
+          <li><strong>NumPy</strong><span>ses sentezi</span></li>
+          <li><strong>LaTeX</strong><span>formül dizgisi</span></li>
+          <li><strong>FFmpeg</strong><span>1080×1920 · 60 fps çıktı</span></li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section id="iletisim" class="bolum bolum-son">
+    <div class="iletisim-ic reveal">
+      <p class="imza-formul" aria-hidden="true"><span class="f-sin">sin²θ</span> + <span class="f-cos">cos²θ</span> <span class="f-esit">= 1</span></p>
+      <h2>Bir sonraki videoyu birlikte seçelim.</h2>
+      <p class="iletisim-metin">Görselleştirmemi istediğin bir konu, aklına takılan bir ispat
+         ya da iş birliği fikri varsa yaz — hepsini okuyorum.</p>
+      <div class="cta-satiri cta-orta">
+        <a class="btn btn-birincil" href="mailto:ilgarozali220@gmail.com">ilgarozali220@gmail.com</a>
+        <a class="btn btn-ikincil gizli" data-duzenle href="https://instagram.com/KULLANICIADIN">Instagram</a>
+        <a class="btn btn-ikincil gizli" data-duzenle href="https://youtube.com/@KULLANICIADIN">YouTube</a>
+        <!-- DÜZENLE: Sosyal medya butonları hazır ama gizli. Hesap adreslerini
+             yukarıdaki href'lere yazıp "gizli" sınıfını silince görünür olurlar. -->
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="alt-bilgi">
+  <!-- DÜZENLE: adın -->
+  <p>© <span id="yil">2026</span> Ilgar Özali</p>
+  <p class="palet-notu" title="Bu sitenin paleti, animasyonların paletiyle aynı">
+    <span class="renk-nokta" style="background:#22D3EE"></span>sinüs
+    <span class="renk-nokta" style="background:#F59E0B"></span>kosinüs
+    <span class="renk-nokta" style="background:#FDE68A"></span>ışıltı
+  </p>
+</footer>
+
+<div class="isik-kutusu" id="isik-kutusu" role="dialog" aria-modal="true" aria-label="Video oynatıcı" hidden>
+  <div class="isik-arka" data-kapat></div>
+  <figure class="isik-govde">
+    <button class="isik-kapat" data-kapat aria-label="Kapat">×</button>
+    <video id="isik-video" controls playsinline preload="metadata"></video>
+    <figcaption id="isik-baslik"></figcaption>
+  </figure>
+</div>
+
+<script src="js/videos.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

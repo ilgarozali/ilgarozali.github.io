@@ -43,7 +43,7 @@
       const dt = Math.min((zaman - sonZaman) / 16.7, 3);
       sonZaman = zaman;
       ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = "#F5F7FA";
+      ctx.fillStyle = "#4A4642";
       for (const p of noktalar) {
         p.x += p.vx * dt; p.y += p.vy * dt;
         if (p.x < -5) p.x = W + 5; if (p.x > W + 5) p.x = -5;

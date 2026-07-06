@@ -99,6 +99,9 @@
       rL.style.opacity = Math.abs(c) < 0.32 ? "0" : "1";
       sinEt.setAttribute("x", px + (c >= 0 ? 46 : -46)); sinEt.setAttribute("y", (CY + py) / 2);
       cosEt.setAttribute("x", (CX + px) / 2); cosEt.setAttribute("y", CY + (s >= 0 ? 27 : -27));
+      // segment sıfıra yaklaşınca etiketi gizle (P ve eksen etiketleriyle çakışmasın)
+      sinEt.style.opacity = Math.abs(s) < 0.18 ? "0" : "1";
+      cosEt.style.opacity = Math.abs(c) < 0.18 ? "0" : "1";
       thetaEt.setAttribute("x", CX + 66 * Math.cos(tn / 2)); thetaEt.setAttribute("y", CY - 66 * Math.sin(tn / 2));
     }
 

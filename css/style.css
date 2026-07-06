@@ -274,7 +274,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   text-anchor: middle;
   dominant-baseline: middle;
 }
-#uc-r-l { transition: opacity .45s ease; }
+#uc-r-l, #uc-sin-l, #uc-cos-l { transition: opacity .45s ease; }
 .uc-ink { fill: var(--murekkep); }
 .uc-cyan { fill: var(--cyan); }
 .uc-amber { fill: var(--amber); }

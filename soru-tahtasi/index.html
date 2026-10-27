@@ -150,7 +150,8 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block
   background: var(--paper); border: 2px solid var(--accent); border-radius: 3px; padding: 1px 4px;
 }
 .hint { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 20px; pointer-events: none; color: var(--muted); font-size: 16px; }
-.work[data-mode="over"] .hint { place-items: end center; }
+.hint[hidden] { display: none; }
+.work[data-mode="over"] .hint { display: none; }
 main[data-view="clean"] .hint, main[data-view="shoot"] .hint { display: none; }
 .laser {
   position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; pointer-events: none;
@@ -206,6 +207,8 @@ main[data-view="shoot"].shownotes .notes {
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
+</head>
+<body>
 <main id="app" data-view="full" data-mode="side">
   <div class="top chrome">
     <div>
@@ -457,7 +460,7 @@ main[data-view="shoot"].shownotes .notes {
       var xe = X0 + (X1 - X0) * lp;
       s += '<line class="ln" x1="' + sx(X0) + '" y1="' + sy(X0) + '" x2="' + sx(xe) + '" y2="' + sy(xe) + '"/>';
     }
-    var cp = a(13, 21);
+    var cp = a(13, 16);
     if (cp > 0) {
       var N = 140, n = Math.max(1, Math.ceil(N * cp)), d = "";
       for (i = 0; i <= n; i++) {
@@ -474,7 +477,7 @@ main[data-view="shoot"].shownotes .notes {
       s += '<g opacity="' + pa + '">';
       for (i = 0; i < 3; i++) {
         s += '<circle class="pt" cx="' + sx(pts[i][0]) + '" cy="' + sy(pts[i][1]) + '" r="6"/>';
-        s += '<text class="lbl" x="' + (sx(pts[i][0]) + 9) + '" y="' + (sy(pts[i][1]) - 8) + '">(' + pts[i][0] + ', ' + pts[i][1] + ')</text>';
+        s += '<text class="lbl" x="' + (sx(pts[i][0]) + 9) + '" y="' + (sy(pts[i][1]) + (i === 1 ? -8 : 20)) + '">(' + pts[i][0] + ', ' + pts[i][1] + ')</text>';
       }
       s += '</g>';
     }
@@ -617,7 +620,7 @@ main[data-view="shoot"].shownotes .notes {
     out += txt(x0 - 8, 340, "b + c", "meas", "end");
     out += '<rect class="barB" x="' + x0 + '" y="330" width="' + (c.b * k * g).toFixed(1) + '" height="12" rx="2"/>';
     out += '<rect class="barC" x="' + (x0 + c.b * k * g).toFixed(1) + '" y="330" width="' + (c.c * k * g).toFixed(1) + '" height="12" rx="2"/>';
-    out += ln(c.P[1], c.P[0], "l-B") + ln(c.P[0], c.P[2], "l-C") + ln(c.P[1], c.P[2], "l-A");
+    out += ln(c.P[0], c.P[2], "l-B") + ln(c.P[1], c.P[0], "l-C") + ln(c.P[1], c.P[2], "l-A");
     if (c.lp > 0.7) {
       out += txt(x0 + (c.a * k) + 8, 322, f1(c.a / U), "meas", "start");
       out += txt(x0 + ((c.b + c.c) * k) + 8, 340, f1((c.b + c.c) / U), "meas", "start");
@@ -646,7 +649,7 @@ main[data-view="shoot"].shownotes .notes {
       var o = clamp((c.lp - 0.4) / 0.3, 0, 1).toFixed(2);
       out += '<g opacity="' + o + '"><polygon class="fillG" points="' + pt(A) + ' ' + pt(B) + ' ' + pt(M) + '"/>';
       out += arcAt(B, A, M, 26, "ar-B") + txt(B[0] + 40, B[1] - 6, "60°", "meas", "middle");
-      out += arcAt(A, B, M, 26, "ar-C") + txt(A[0] - 36, A[1] + 56, "30°", "meas", "middle");
+      out += arcAt(A, B, M, 26, "ar-C") + txt(A[0] + 10, A[1] + 56, "30°", "meas", "start");
       out += '<path class="thin" d="M' + (M[0] - 10) + ' ' + M[1] + ' V' + (M[1] - 10) + ' H' + M[0] + '"/>' + txt(M[0] + 6, M[1] - 12, "90°", "meas", "start");
       out += '</g>';
     }
@@ -908,6 +911,10 @@ main[data-view="shoot"].shownotes .notes {
     playBtn(); render();
   }
   $("lesson").addEventListener("change", function (e) { setLesson(e.target.value); });
+  // Seçim kutusu ya da kaydırıcı odakta kalırsa ←/→ ve Boşluk kısayolları çalışmaz, ders değişebilir
+  ["lesson", "pace", "speed", "seek"].forEach(function (id) {
+    $(id).addEventListener("change", function (e) { e.target.blur(); });
+  });
 
   $("play").addEventListener("click", toggleAuto);
   $("next").addEventListener("click", next);
@@ -924,8 +931,9 @@ main[data-view="shoot"].shownotes .notes {
     var r = svg.getBoundingClientRect();
     return [(e.clientX - r.left) / r.width * 640, (e.clientY - r.top) / r.height * 400];
   }
+  function mainButton(e) { return e.pointerType !== "mouse" || e.button === 0; }
   svg.addEventListener("pointerdown", function (e) {
-    if (!lesson.drag || !isFree()) return;
+    if (!lesson.drag || !isFree() || !mainButton(e)) return;
     var p = svgPos(e), best = -1, bd = 34, k;
     for (k = 0; k < 3; k++) { var d = dist(p, userTri[k]); if (d < bd) { bd = d; best = k; } }
     if (best < 0) return;
@@ -1005,6 +1013,7 @@ main[data-view="shoot"].shownotes .notes {
   }
 
   cv.addEventListener("pointerdown", function (e) {
+    if (!mainButton(e)) return;
     if ((tool === "pen" || tool === "hl") && lesson.drag && isFree()) {
       var sp = svgPos(e), k2;
       for (k2 = 0; k2 < 3; k2++) {
@@ -1045,7 +1054,14 @@ main[data-view="shoot"].shownotes .notes {
   function eraseAt(e) {
     var r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, before = st.strokes.length;
     st.strokes = st.strokes.filter(function (s) {
-      return !s.pts.some(function (p) { var dx = p[0] * bw - x, dy = p[1] * bh - y; return dx * dx + dy * dy < 196; });
+      return !s.pts.some(function (p, i) {
+        var ax = p[0] * bw, ay = p[1] * bh, bx = ax, by = ay;
+        if (i + 1 < s.pts.length) { bx = s.pts[i + 1][0] * bw; by = s.pts[i + 1][1] * bh; }
+        var vx = bx - ax, vy = by - ay, l2 = vx * vx + vy * vy;
+        var u = l2 ? clamp(((x - ax) * vx + (y - ay) * vy) / l2, 0, 1) : 0;
+        var dx = ax + vx * u - x, dy = ay + vy * u - y;
+        return dx * dx + dy * dy < 196;
+      });
     });
     if (st.strokes.length !== before) { erased = true; sync(); }
   }
@@ -1216,3 +1232,5 @@ main[data-view="shoot"].shownotes .notes {
   requestAnimationFrame(function (n) { last = n; requestAnimationFrame(loop); });
 })();
 </script>
+</body>
+</html>
